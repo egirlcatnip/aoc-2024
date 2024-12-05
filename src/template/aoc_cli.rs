@@ -1,6 +1,7 @@
 /// Wrapper module around the "aoc-cli" command-line.
 use std::{
     fmt::Display,
+    path::PathBuf,
     process::{Command, Output, Stdio},
 };
 
@@ -41,7 +42,7 @@ pub fn read(day: Day) -> Result<Output, AocCommandError> {
         &[
             "--description-only".into(),
             "--puzzle-file".into(),
-            puzzle_path,
+            puzzle_path.to_string_lossy().into_owned(),
         ],
         day,
     );
@@ -58,17 +59,23 @@ pub fn download(day: Day) -> Result<Output, AocCommandError> {
         &[
             "--overwrite".into(),
             "--input-file".into(),
-            input_path.to_string(),
+            input_path.to_string_lossy().into_owned(),
             "--puzzle-file".into(),
-            puzzle_path.to_string(),
+            puzzle_path.to_string_lossy().into_owned(),
         ],
         day,
     );
 
     let output = call_aoc_cli(&args)?;
     println!("---");
-    println!("🎄 Successfully wrote input to \"{}\".", &input_path);
-    println!("🎄 Successfully wrote puzzle to \"{}\".", &puzzle_path);
+    println!(
+        "🎄 Successfully wrote input to \"{}\".",
+        input_path.display()
+    );
+    println!(
+        "🎄 Successfully wrote puzzle to \"{}\".",
+        puzzle_path.display()
+    );
     Ok(output)
 }
 
@@ -80,12 +87,18 @@ pub fn submit(day: Day, part: u8, result: &str) -> Result<Output, AocCommandErro
     call_aoc_cli(&args)
 }
 
-fn get_input_path(day: Day) -> String {
-    format!("data/inputs/{day}.txt")
+fn get_input_path(day: Day) -> PathBuf {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("data")
+        .join("inputs")
+        .join(format!("{}.txt", day))
 }
 
-fn get_puzzle_path(day: Day) -> String {
-    format!("data/puzzles/{day}.md")
+fn get_puzzle_path(day: Day) -> PathBuf {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("data")
+        .join("inputs")
+        .join(format!("{}.txt", day))
 }
 
 fn get_year() -> Option<u16> {
