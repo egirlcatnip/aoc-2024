@@ -87,18 +87,14 @@ pub fn submit(day: Day, part: u8, result: &str) -> Result<Output, AocCommandErro
     call_aoc_cli(&args)
 }
 
-fn get_input_path(day: Day) -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("data")
-        .join("inputs")
-        .join(format!("{}.txt", day))
+fn get_input_path(day: Day) -> String {
+    let crate_root = std::env::var("CARGO_MANIFEST_DIR").unwrap_or(".".into());
+    format!("{crate_root}/data/inputs/{day}.txt")
 }
 
-fn get_puzzle_path(day: Day) -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("data")
-        .join("inputs")
-        .join(format!("{}.txt", day))
+fn get_puzzle_path(day: Day) -> String {
+    let crate_root = std::env::var("CARGO_MANIFEST_DIR").unwrap_or(".".into());
+    format!("{crate_root}/data/puzzles/{day}.md")
 }
 
 fn get_year() -> Option<u16> {
