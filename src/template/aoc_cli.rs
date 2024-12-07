@@ -42,7 +42,7 @@ pub fn read(day: Day) -> Result<Output, AocCommandError> {
         &[
             "--description-only".into(),
             "--puzzle-file".into(),
-            puzzle_path.to_string_lossy().into_owned(),
+            puzzle_path,
         ],
         day,
     );
@@ -59,23 +59,17 @@ pub fn download(day: Day) -> Result<Output, AocCommandError> {
         &[
             "--overwrite".into(),
             "--input-file".into(),
-            input_path.to_string_lossy().into_owned(),
+            input_path.clone(),
             "--puzzle-file".into(),
-            puzzle_path.to_string_lossy().into_owned(),
+            puzzle_path.clone(),
         ],
         day,
     );
 
     let output = call_aoc_cli(&args)?;
     println!("---");
-    println!(
-        "🎄 Successfully wrote input to \"{}\".",
-        input_path.display()
-    );
-    println!(
-        "🎄 Successfully wrote puzzle to \"{}\".",
-        puzzle_path.display()
-    );
+    println!("🎄 Successfully wrote input to \"{}\".", input_path);
+    println!("🎄 Successfully wrote puzzle to \"{}\".", puzzle_path);
     Ok(output)
 }
 
