@@ -81,11 +81,13 @@ pub fn submit(day: Day, part: u8, result: &str) -> Result<Output, AocCommandErro
 }
 
 fn get_input_path(day: Day) -> String {
-    format!("data/inputs/{day}.txt")
+    let crate_root = std::env::var("CARGO_MANIFEST_DIR").unwrap_or(".".into());
+    format!("{crate_root}/data/inputs/{day}.txt")
 }
 
 fn get_puzzle_path(day: Day) -> String {
-    format!("data/puzzles/{day}.md")
+    let crate_root = std::env::var("CARGO_MANIFEST_DIR").unwrap_or(".".into());
+    format!("{crate_root}/data/puzzles/{day}.md")
 }
 
 fn get_year() -> Option<u16> {

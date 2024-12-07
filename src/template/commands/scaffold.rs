@@ -28,9 +28,11 @@ fn create_file(path: &str) -> Result<File, std::io::Error> {
 }
 
 pub fn handle(day: Day, overwrite: bool) {
-    let input_path = format!("data/inputs/{day}.txt");
-    let example_path = format!("data/examples/{day}.txt");
-    let module_path = format!("src/bin/{day}.rs");
+    let crate_root = std::env::var("CARGO_MANIFEST_DIR").unwrap_or(".".into());
+
+    let input_path = format!("{crate_root}/data/inputs/{day}.txt");
+    let example_path = format!("{crate_root}/data/examples/{day}.txt");
+    let module_path = format!("{crate_root}/src/bin/{day}.rs");
 
     let mut file = match safe_create_file(&module_path, overwrite) {
         Ok(file) => file,

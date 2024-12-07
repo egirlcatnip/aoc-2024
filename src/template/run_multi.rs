@@ -61,7 +61,8 @@ impl From<std::io::Error> for Error {
 
 #[must_use]
 pub fn get_path_for_bin(day: Day) -> String {
-    format!("./src/bin/{day}.rs")
+    let crate_root = std::env::var("CARGO_MANIFEST_DIR").unwrap_or(".".into());
+    format!("{crate_root}/src/bin/{day}.rs")
 }
 
 /// All solutions live in isolated binaries.
